@@ -11,8 +11,9 @@ enter commands, available commands:
 * for loops (for var = number; comparison (e.g. : var < number); var = expression (e.g. : var = var + 1)) expression (e.g.: anothervar = value)
 * while loops (while (comparison) expression)
 * type checking (cannot add float to int etc)
+
 known limitations:
-  no string support
-  lambdas evalute only to expression, you cannot use lambda()()
-  functions only take singular arguments
+* no string support
+* lambdas evalute only to expression, you cannot use lambda()()
+* functions only take singular arguments
 
