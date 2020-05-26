@@ -23,8 +23,7 @@ def p_codeline(p):
                 | statement SEMICOLON codeline %prec SEMICOLON
                 | statement SEMICOLON
     """
-    if p[1] is not None:
-        print(p[1].value)
+    p[0] = AST.CodeLine(p[1])
     pass
 
 

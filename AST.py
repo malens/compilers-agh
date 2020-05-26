@@ -1,6 +1,7 @@
 import math
 import time
 
+
 import Levenshtein as lev
 import tokens
 
@@ -24,11 +25,10 @@ f_functions = {
 # Structure
 
 class CodeLine(Node):
-    def __init__(self, line, value):
+    def __init__(self, line):
         self.line = line
-        self.value = value if value is not None else value
-
-        # print(self.value)
+        self.value = line.value if line is not None else None
+        print(self.value)
 
 
 # Control
@@ -62,17 +62,10 @@ class While(Node):
         self.condition = condition
         self.instruction = instruction
         self.value = None
-        print(condition.value)
-        print(condition.value == True)
         while condition.value:
-            print(instruction.value)
             instruction.redo()
-            print(instruction.value)
-            print(condition.value)
             condition.refresh()
-            print(condition.value)
 
-            time.sleep(1)
 
 
 # Operations
@@ -192,8 +185,10 @@ class Name(Node):
                     print("Undefined name '%s'" % name)
                     self.name = "UNDEFINED"
                     self.value = 0
+
     def redo(self):
         self.value = names[self.name].value
+
 
 class Error(Node):
     def __init__(self):

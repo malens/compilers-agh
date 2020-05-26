@@ -1,6 +1,7 @@
 import ply.yacc as yacc
 import parser
 import tokens
+import treeprinter
 
 if __name__ == '__main__':
     parser = yacc.yacc(module=parser)
@@ -12,4 +13,4 @@ if __name__ == '__main__':
         if not text:
             continue
         ast = parser.parse(text, lexer=tokens.lexer, debug=True)
-        # ast.printTree()
+        ast.print_tree()
