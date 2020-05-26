@@ -9,6 +9,7 @@ tokens = tokens.tokens
 
 precedence = (
     ('left', 'SEMICOLON'),
+    ('left', 'function'),
     ('right', 'ELSE'),
     ('left', 'PLUS', 'MINUS'),
     ('left', 'TIMES', 'DIVIDE'),
@@ -28,17 +29,32 @@ def p_codeline(p):
 
 
 def p_statement_assign(p):
-    'assignment : NAME EQUALS expression'
-    p[0] = AST.Assignment(p[1], p[3])
+    '''assignment : NAME EQUALS expression
+                  | TYPE NAME EQUALS expression
+    '''
+    if len(p) == 4:
+        p[0] = AST.Assignment(p[1], p[3])
+    else:
+        p[0] = AST.Assignment(p[2], p[4], p[1])
 
 
 def p_statement(p):
     """statement : expression
                  | comparison
                  | assignment
+                 | function
     """
     p[0] = p[1]
 
+
+
+
+def p_lambdadef(p):
+    """function : TYPE NAME NAME ARROW expression
+                | TYPE NAME NAME ARROW function
+
+    """
+    p[0] = AST.Lambda(p[2], p[3], p[5], p[1])
 
 # def p_expression_binop(p):
 #     """
@@ -107,11 +123,14 @@ def p_expression_binop(p):
 
 def p_expression_uminus(p):
     'expression : MINUS expression %prec UMINUS'
-    p[0] = AST.MinusOperator(p[1])
+    p[0] = AST.MinusOperator(p[2])
 
 
 def p_expression_function(p):
-    'expression : FUNCTION expression %prec FUNCTION'
+    """expression : FUNCTION expression %prec FUNCTION
+                  | function expression
+                  | function function %prec function
+    """
     p[0] = AST.Function(p[1], p[2])
 
 
@@ -125,7 +144,7 @@ def p_expression_number(p):
                   | INTEGER
                   | BOOLEAN
     """
-    p[0] = AST.Number(p[1])
+    p[0] = AST.Number(p[1], type(p[1]).__name__)
 
 
 def p_expression_name(p):

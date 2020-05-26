@@ -11,16 +11,26 @@ functions = {
     'sin': 'FUNCTION',
     'cos': 'FUNCTION',
     'tan': 'FUNCTION',
-    'sqrt': 'FUNCTION'
+    'sqrt': 'FUNCTION',
+    'inttofloat': 'FUNCTION',
+    'floattoint': 'FUNCTION'
+}
+
+types = {
+    'int': 'TYPE',
+    'float': 'TYPE',
+    'boolean': 'TYPE'
 }
 
 tokens = [
-             'NAME', 'INTEGER', 'FLOAT', 'BOOLEAN',
+             'NAME', 'INTEGER', 'FLOAT', 'BOOLEAN', 'TYPE', 'ARROW',
              'PLUS', 'MINUS', 'EXP', 'TIMES', 'DIVIDE', 'EQUALS',
              'LPAREN', 'RPAREN',
              'FUNCTION', 'USELESSEQ', 'SEMICOLON',
              'RELATION'
          ] + list(reserved.values())
+
+t_ARROW = r'-\>'
 t_SEMICOLON = r';|.\Z'
 t_PLUS = r'\+'
 t_MINUS = r'-'
@@ -46,6 +56,8 @@ def t_NAME(t):
     t.type = reserved.get(t.value, 'NAME')
     if t.type == 'NAME':
         t.type = functions.get(t.value, 'NAME')
+    if t.type == 'NAME':
+        t.type = types.get(t.value, 'NAME')
     return t
 
 
